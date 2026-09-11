@@ -24,6 +24,9 @@ Study Qualcomm MSM8953 boot chain, EDL 9008 low-level flashing, BL unlock, signa
 2. EDL 9008 is low-level hardware flashing channel, which can bypass system-level restriction.
 3. Defense strategy: enforce secure boot, sign all partitions, restrict EDL access in production devices.
 
+## Risk & Impact Analysis
+EDL 9008 and bootloader unlock break the trusted boot chain. After BL unlock, device integrity cannot be guaranteed. Malicious images can be flashed, which may lead to data leakage and security compromise. Most commercial applications will refuse to run on unlocked devices.
+
 ## Conclusion
 1. Low-version official firmware uses OFQ encryption and cannot directly extract boot.img.
 2. EDL is hardware-level flashing channel, works even when fastboot is blocked.
