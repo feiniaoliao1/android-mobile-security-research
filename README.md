@@ -1,2 +1,10 @@
-# android-mobile-security-research
-Personal research notes on Android mobile terminal security and threat detection, for learning purposes only.
+#Android-移动-安全-研究
+关于Android移动终端安全和威胁检测的个人研究笔记，仅供学习之用。
+
+##实验清单
+- [针对Oppo R11T的EDL9008闪存实验](notes/edl-flash-opo-r11t.md)
+- [KernelSU LKM在OnePlus13T上的根实验](notes/kernelsu-periment-oneplus13t.md)
+
+##描述
+这个知识库存储了我个人的Android安全学习记录，包括固件提取、EDL闪存、内核根和相关原理探索。
+所有实验仅供学术研究。
