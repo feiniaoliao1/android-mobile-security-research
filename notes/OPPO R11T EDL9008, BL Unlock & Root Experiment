@@ -1,36 +1,31 @@
-# OPPO R11T EDL 9008, BL Unlock and Root Experiment
+# OPPO R11T EDL & BL Unlock Experiment
 
 ## Experiment Overview
-This study focuses on the Qualcomm MSM8953 boot chain, EDL low-level flashing, Bootloader unlock, custom Recovery deployment, and Magisk-based Root on OPPO R11T. The device was downgraded through EDL to bypass fastboot restrictions, then upgraded to Android 9 using TWRP to skip signature verification. Finally, Root access was obtained by patching the boot image.
+Study Qualcomm MSM8953 boot chain, EDL 9008 low-level flashing, BL unlock, signature bypass and Magisk root theory.
 
 ## Environment
-- Device: OPPO R11T (Qualcomm MSM8953)
-- Firmware: low-version stock full package (OFQ encrypted), Android 9 full package
+- Device: OPPO R11T
+- Chip: Qualcomm MSM8953
+- Firmware: OFQ encrypted low-version stock package, Android9 full package
 - Tools: MsmDownloadTool, MCT_OFQ_Extractor.exe, fastboot toolkit, Magisk
 - Modes: EDL 9008, Fastboot, TWRP
 
-## Key Findings
-1. The low-version OPPO firmware was encrypted in OFQ format, so boot.img could not be extracted directly.
-2. MCT_OFQ_Extractor.exe was used to decrypt the OFQ firmware and extract partition images.
-3. EDL can force flash full firmware even when the Bootloader or fastboot interface is restricted.
-4. Some firmware versions block fastboot access, so BL unlock may require downgrading to a specific older build.
-5. Stock Recovery rejects unofficial updates due to signature verification.
-6. TWRP allows unsigned or non-official packages to be flashed, but also introduces risks to system integrity.
-7. Root on this device was achieved by extracting boot.img, patching it with Magisk, and flashing it through fastboot.
-
-## Procedure
-1. Prepare the low-version OFQ firmware and Android 9 full package.
-2. Use MCT_OFQ_Extractor.exe to decrypt the OFQ package and extract partition images.
-3. Flash the device via EDL 9008 using MsmDownloadTool.
-4. If fastboot is blocked on the current build, downgrade again to an older supported version.
-5. Enter fastboot and unlock the Bootloader.
-6. Flash TWRP through fastboot to bypass stock Recovery verification.
-7. Install the Android 9 full package in TWRP.
-8. Extract boot.img from the Android 9 build and patch it with Magisk.
-9. Reboot to fastboot and flash the patched boot image to obtain Root.
+## Key Operation
+1. Use MCT_OFQ_Extractor.exe to decrypt OFQ firmware and extract partition images.
+2. Flash device via EDL 9008 for downgrade.
+3. Downgrade to the specific version that enables fastboot access.
+4. Unlock Bootloader after entering fastboot mode.
+5. Flash TWRP custom recovery to bypass stock signature verification.
+6. Flash Android9 full package inside TWRP.
+7. Patch boot.img with Magisk and flash patched boot image to get root.
 
 ## Conclusion
-OPPO R11T cannot be rooted through a single firmware flash. The full process requires combining EDL downgrade, BL unlock, TWRP deployment, Android 9 upgrade, and boot image patching. This experiment demonstrates the multi-layer protection mechanisms implemented by manufacturers, including fastboot restrictions, signature verification, and Bootloader locks.
+1. Low-version official firmware uses OFQ encryption and cannot directly extract boot.img.
+2. EDL is hardware-level flashing channel, works even when fastboot is blocked.
+3. BL unlock depends on firmware version; downgrade is required for this device.
+4. Stock recovery rejects unsigned packages, TWRP can skip signature check.
+5. Root is implemented by Magisk patched boot image on this old Qualcomm platform.
 
 ## Statement
-Only personal security learning and research are performed here. Do not use this information for unauthorized or illegal purposes.
+Only personal security learning. Not used for unauthorized or illegal purposes.
+
