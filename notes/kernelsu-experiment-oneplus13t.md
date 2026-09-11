@@ -15,6 +15,15 @@ Study KernelSU LKM root, SukiSU-Ultra, root detection, SELinux mode, and root hi
 4. Research root detection methods: detect su binary, check kernel symbols.
 5. Try to hide root traces for app environment detection research.
 
+## Risk & Impact Analysis
+Unlocking bootloader and root will break device trusted environment. Banking and game applications may detect modification and restrict service. Root hiding only bypass partial user-space checks, hardware-backed attestation cannot be bypassed by pure software method.
+
+## Detection & Defense Mechanisms
+1. Common user-space root detection: check su binary, check magisk related props, scan process list. These methods can be bypassed by KernelSU hide feature.
+2. Deeper detection: kernel space behavior monitoring, verified boot, TEE attestation. Those are harder to bypass.
+3. Defense suggestion: app can combine multi-layer detection (userland + kernel attestation) to identify modified device.
+
+
 ## Conclusion
 1. KernelSU LKM works at kernel level, different from Zygisk user-mode root.
 2. Many root checks scan `/proc` and kernel log.
