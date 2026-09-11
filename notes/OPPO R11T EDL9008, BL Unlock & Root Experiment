@@ -1,49 +1,36 @@
-##Experiment Purpose
- 
-To study the boot chain of Qualcomm platforms and Bootloader lock mechanisms. Master the full workflow including EDL low-level flashing, fastboot operations, deploying custom Recovery, and boot image patching for Root. Understand signature verification restrictions during Android system upgrade/downgrade. This experiment is only for personal learning of operating systems and mobile security.
- 
- ##Experiment Environment
- 
+# OPPO R11T EDL 9008, BL Unlock and Root Experiment
+
+## Experiment Overview
+This study focuses on the Qualcomm MSM8953 boot chain, EDL low-level flashing, Bootloader unlock, custom Recovery deployment, and Magisk-based Root on OPPO R11T. The device was downgraded through EDL to bypass fastboot restrictions, then upgraded to Android 9 using TWRP to skip signature verification. Finally, Root access was obtained by patching the boot image.
+
+## Environment
 - Device: OPPO R11T (Qualcomm MSM8953)
-​
-- Firmware: Low-version stock full firmware package（OFQ encrypted format）, Android 9 full firmware package
-​
-- Tools: MsmDownloadTool, MCT_OFQ_Extractor.exe (firmware decryption & extractor), fastboot toolkit, Magisk
-​
-- Modes: EDL(9008), Fastboot, TWRP custom Recovery
- 
-##Experiment Procedure
- 
-1. I used MsmDownloadTool to flash the device via EDL 9008 for downgrade. The low-version stock full firmware package is in OFQ encrypted format, which cannot directly extract the boot.img. I adopted the firmware decryption tool MCT_OFQ_Extractor.exe to decrypt and extract partition images.
-​
-2. The first downgraded build was still too high. The vendor blocked the fastboot access on this firmware, so Bootloader could not be unlocked.
-​
-3. I flashed the low-version stock full package again through EDL 9008. After downgrade completed, fastboot became accessible, and I successfully unlocked the Bootloader.
- 
-Note: Unlocking BL wipes all user data and disables the device’s official integrity protection.
- 
-4. After BL unlock, the old system had poor compatibility with many modules and applications. I planned to upgrade to Android 9. I had prepared the Android 9 full firmware package, but it could not be upgraded via the stock Recovery due to official signature verification.
-​
-5. I entered fastboot with the PC toolkit and flashed TWRP custom Recovery. TWRP can bypass the official signature check.
-​
-6. Flashed the Android 9 full system package inside TWRP. The device booted normally after upgrade.
-​
-7. Extracted the boot.img from this Android 9 build. Used Magisk to patch the boot image. Rebooted into fastboot and flashed the patched boot image, finally obtaining Root access.
- 
-##Summary & Pitfalls
- 
-1. The low-version official firmware uses OFQ encryption. Raw firmware cannot directly get partition images. Tools like MCT_OFQ_Extractor.exe are required for decryption and extraction.
-​
-2. EDL is a hardware-level channel for Qualcomm chips to force flash full firmware. Vendor restrictions vary across system versions. Newer builds may disable fastboot entirely. BL unlock requires downgrading to a specific older release.
-​
-3. BL unlock depends on fastboot access. Downgrading via EDL does not guarantee unlock; vendors add limitations on different firmware versions.
-​
-4. Stock Recovery validates firmware signatures and rejects unofficial packages. TWRP custom Recovery skips signature verification and allows flashing custom system packages.
-​
-5. The Root method for this old Qualcomm device relies on Magisk-patched boot images flashed via fastboot. System upgrades replace the boot partition and invalidate Root, requiring re-patching.
-​
-6. Low-level flashing carries risks such as NV partition corruption, IMEI loss and baseband failure. Do not replicate this experiment on daily-use devices.
- 
-##Risk Statement
- 
-Low-level EDL flashing, Bootloader unlocking and custom Recovery flashing erase user data and break factory protection. There is risk of bricking the device. This experiment is for personal research only. Do not operate on your daily main phone.
+- Firmware: low-version stock full package (OFQ encrypted), Android 9 full package
+- Tools: MsmDownloadTool, MCT_OFQ_Extractor.exe, fastboot toolkit, Magisk
+- Modes: EDL 9008, Fastboot, TWRP
+
+## Key Findings
+1. The low-version OPPO firmware was encrypted in OFQ format, so boot.img could not be extracted directly.
+2. MCT_OFQ_Extractor.exe was used to decrypt the OFQ firmware and extract partition images.
+3. EDL can force flash full firmware even when the Bootloader or fastboot interface is restricted.
+4. Some firmware versions block fastboot access, so BL unlock may require downgrading to a specific older build.
+5. Stock Recovery rejects unofficial updates due to signature verification.
+6. TWRP allows unsigned or non-official packages to be flashed, but also introduces risks to system integrity.
+7. Root on this device was achieved by extracting boot.img, patching it with Magisk, and flashing it through fastboot.
+
+## Procedure
+1. Prepare the low-version OFQ firmware and Android 9 full package.
+2. Use MCT_OFQ_Extractor.exe to decrypt the OFQ package and extract partition images.
+3. Flash the device via EDL 9008 using MsmDownloadTool.
+4. If fastboot is blocked on the current build, downgrade again to an older supported version.
+5. Enter fastboot and unlock the Bootloader.
+6. Flash TWRP through fastboot to bypass stock Recovery verification.
+7. Install the Android 9 full package in TWRP.
+8. Extract boot.img from the Android 9 build and patch it with Magisk.
+9. Reboot to fastboot and flash the patched boot image to obtain Root.
+
+## Conclusion
+OPPO R11T cannot be rooted through a single firmware flash. The full process requires combining EDL downgrade, BL unlock, TWRP deployment, Android 9 upgrade, and boot image patching. This experiment demonstrates the multi-layer protection mechanisms implemented by manufacturers, including fastboot restrictions, signature verification, and Bootloader locks.
+
+## Statement
+Only personal security learning and research are performed here. Do not use this information for unauthorized or illegal purposes.
