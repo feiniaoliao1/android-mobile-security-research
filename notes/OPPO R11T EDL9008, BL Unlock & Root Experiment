@@ -1,0 +1,49 @@
+##Experiment Purpose
+ 
+To study the boot chain of Qualcomm platforms and Bootloader lock mechanisms. Master the full workflow including EDL low-level flashing, fastboot operations, deploying custom Recovery, and boot image patching for Root. Understand signature verification restrictions during Android system upgrade/downgrade. This experiment is only for personal learning of operating systems and mobile security.
+ 
+ ##Experiment Environment
+ 
+- Device: OPPO R11T (Qualcomm MSM8953)
+​
+- Firmware: Low-version stock full firmware package（OFQ encrypted format）, Android 9 full firmware package
+​
+- Tools: MsmDownloadTool, MCT_OFQ_Extractor.exe (firmware decryption & extractor), fastboot toolkit, Magisk
+​
+- Modes: EDL(9008), Fastboot, TWRP custom Recovery
+ 
+##Experiment Procedure
+ 
+1. I used MsmDownloadTool to flash the device via EDL 9008 for downgrade. The low-version stock full firmware package is in OFQ encrypted format, which cannot directly extract the boot.img. I adopted the firmware decryption tool MCT_OFQ_Extractor.exe to decrypt and extract partition images.
+​
+2. The first downgraded build was still too high. The vendor blocked the fastboot access on this firmware, so Bootloader could not be unlocked.
+​
+3. I flashed the low-version stock full package again through EDL 9008. After downgrade completed, fastboot became accessible, and I successfully unlocked the Bootloader.
+ 
+Note: Unlocking BL wipes all user data and disables the device’s official integrity protection.
+ 
+4. After BL unlock, the old system had poor compatibility with many modules and applications. I planned to upgrade to Android 9. I had prepared the Android 9 full firmware package, but it could not be upgraded via the stock Recovery due to official signature verification.
+​
+5. I entered fastboot with the PC toolkit and flashed TWRP custom Recovery. TWRP can bypass the official signature check.
+​
+6. Flashed the Android 9 full system package inside TWRP. The device booted normally after upgrade.
+​
+7. Extracted the boot.img from this Android 9 build. Used Magisk to patch the boot image. Rebooted into fastboot and flashed the patched boot image, finally obtaining Root access.
+ 
+##Summary & Pitfalls
+ 
+1. The low-version official firmware uses OFQ encryption. Raw firmware cannot directly get partition images. Tools like MCT_OFQ_Extractor.exe are required for decryption and extraction.
+​
+2. EDL is a hardware-level channel for Qualcomm chips to force flash full firmware. Vendor restrictions vary across system versions. Newer builds may disable fastboot entirely. BL unlock requires downgrading to a specific older release.
+​
+3. BL unlock depends on fastboot access. Downgrading via EDL does not guarantee unlock; vendors add limitations on different firmware versions.
+​
+4. Stock Recovery validates firmware signatures and rejects unofficial packages. TWRP custom Recovery skips signature verification and allows flashing custom system packages.
+​
+5. The Root method for this old Qualcomm device relies on Magisk-patched boot images flashed via fastboot. System upgrades replace the boot partition and invalidate Root, requiring re-patching.
+​
+6. Low-level flashing carries risks such as NV partition corruption, IMEI loss and baseband failure. Do not replicate this experiment on daily-use devices.
+ 
+##Risk Statement
+ 
+Low-level EDL flashing, Bootloader unlocking and custom Recovery flashing erase user data and break factory protection. There is risk of bricking the device. This experiment is for personal research only. Do not operate on your daily main phone.
