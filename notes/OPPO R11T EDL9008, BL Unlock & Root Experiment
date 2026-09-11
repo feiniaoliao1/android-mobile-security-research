@@ -19,6 +19,11 @@ Study Qualcomm MSM8953 boot chain, EDL 9008 low-level flashing, BL unlock, signa
 6. Flash Android9 full package inside TWRP.
 7. Patch boot.img with Magisk and flash patched boot image to get root.
 
+## Detection & Defense Mechanisms
+1. Vendor protection mechanism: anti-downgrade rollback protection, signed boot chain, locked bootloader.
+2. EDL 9008 is low-level hardware flashing channel, which can bypass system-level restriction.
+3. Defense strategy: enforce secure boot, sign all partitions, restrict EDL access in production devices.
+
 ## Conclusion
 1. Low-version official firmware uses OFQ encryption and cannot directly extract boot.img.
 2. EDL is hardware-level flashing channel, works even when fastboot is blocked.
